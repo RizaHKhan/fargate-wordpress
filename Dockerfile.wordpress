@@ -1,0 +1,13 @@
+# Fargate-ready WordPress image.
+# Build and tag with WORDPRESS_IMAGE=<account>.dkr.ecr.<region>.amazonaws.com/<repo>:<tag>
+# before pushing to ECR for ECS/Fargate deployments.
+FROM wordpress:php8.4-apache
+
+COPY config/php/wordpress-runtime.ini /usr/local/etc/php/conf.d/wordpress-runtime.ini
+COPY config/apache/wordpress-fargate.conf /etc/apache2/conf-available/wordpress-fargate.conf
+
+RUN set -eux; \
+    a2enmod headers expires; \
+    a2enconf wordpress-fargate
+
+# Keep the official WordPress Apache entrypoint/CMD so runtime behavior matches the upstream image.

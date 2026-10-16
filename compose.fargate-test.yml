@@ -1,0 +1,10 @@
+# Optional override for short-lived Fargate database testing.
+# Usage example:
+#   docker compose -f compose.yml -f compose.fargate-test.yml up
+#
+# This removes the local named volume from the database container so the service
+# can run as an ephemeral Fargate task. Use RDS or EFS for anything that must
+# persist beyond test task replacement/restarts.
+services:
+  db:
+    volumes: []

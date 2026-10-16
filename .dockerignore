@@ -1,0 +1,10 @@
+.git
+.env
+compose*.yml
+
+# Exclude host-generated frontend artifacts from Docker build context only;
+# this does not prevent these paths from being created on the host.
+frontend/.nuxt
+frontend/.output
+frontend/node_modules
+frontend/.pnpm-store

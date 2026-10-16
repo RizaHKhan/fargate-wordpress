@@ -1,0 +1,31 @@
+@host = http://localhost:80
+
+# API root discovery: curl -sI http://localhost:80/ | grep -i "^link"
+# curl -sI = silent HEAD request. WordPress advertises its REST API root with an HTTP Link header.
+# Link: <http://localhost/wp-json/>; rel="https://api.w.org/" means the URL in <> is the API root
+# because the rel value is WordPress's registered REST API relation.
+
+### Public: list published posts (no auth needed, same as the website)
+GET {{host}}/wp-json/wp/v2/posts
+accept: application/json
+
+### Authenticated: list drafts and other non-public posts
+GET {{host}}/wp-json/wp/v2/posts?status=draft,publish,private
+Authorization: Basic {{WP_API_USER}}:{{WP_API_APP_PASSWORD}}
+accept: application/json
+
+### Authenticated: who am I
+GET {{host}}/wp-json/wp/v2/users/me
+Authorization: Basic {{WP_API_USER}}:{{WP_API_APP_PASSWORD}}
+accept: application/json
+
+### Authenticated: create a draft post
+POST {{host}}/wp-json/wp/v2/posts
+Authorization: Basic {{WP_API_USER}}:{{WP_API_APP_PASSWORD}}
+accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Hello from REST Client",
+  "status": "draft"
+}
